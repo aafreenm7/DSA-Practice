@@ -21,6 +21,8 @@ void insert(node *&head,int data){
         }
         temp->next=nn;
     }    
+cout << data << " successfully added!!" << endl;
+
 }
 void insert_beg(node *&head,int data){
     node *nn=new node;
@@ -28,6 +30,8 @@ void insert_beg(node *&head,int data){
     nn->data=data;
     nn->next=head;
     head=nn;
+    cout << data << " successfully added at the begining!!" << endl;
+
 }
 void insert_mid(node*&head,int data,int val){
     node *nn=new node;
@@ -42,15 +46,18 @@ void insert_mid(node*&head,int data,int val){
         temp->next = nn;        
         nn->next = aad;         
         }
-        }
+    cout << data << " successfully added!!" << endl;
+    }
 void display(node *head){
     node *temp = head;
+    cout<<"\n";
+    cout<<"LINKEDLIST:";
     while(temp!=NULL){
         cout<<temp->data<<" ";
 
         temp=temp->next;
     }
-    cout<<"\n";
+    cout<<"\n"<<endl;;
 }
 void delete_val(node *&head,int val){
     node *temp = head;
@@ -63,6 +70,8 @@ void delete_val(node *&head,int val){
         prev->next=temp->next;
         delete temp;
     }
+    cout << val << " successfully deleted!!" << endl;
+
     }
 
 int main(){
