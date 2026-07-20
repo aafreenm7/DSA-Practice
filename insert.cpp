@@ -1,0 +1,82 @@
+#include<iostream>
+using namespace std;
+struct node {
+    int data;
+    node *next;
+};
+void insert(node *&head,int data){
+    node *nn=new node;
+       
+    nn->data=data;
+    nn->next=NULL;
+    if (head==NULL){
+        head=nn;
+    }
+    else{
+        node*temp;
+        temp=head;
+        while(temp->next!=NULL){
+            temp=temp->next;
+            
+        }
+        temp->next=nn;
+    }    
+}
+void insert_beg(node *&head,int data){
+    node *nn=new node;
+    
+    nn->data=data;
+    nn->next=head;
+    head=nn;
+}
+void insert_mid(node*&head,int data,int val){
+    node *nn=new node;
+    nn->data=data;
+    nn->next=NULL;
+    node*temp=head;
+    while (temp != NULL && temp->data != val){
+        temp = temp->next;
+    }
+    if (temp != NULL) {
+        node *aad = temp->next; 
+        temp->next = nn;        
+        nn->next = aad;         
+        }
+        }
+void display(node *head){
+    node *temp = head;
+    while(temp!=NULL){
+        cout<<temp->data<<" ";
+
+        temp=temp->next;
+    }
+    cout<<"\n";
+}
+void delete_val(node *&head,int val){
+    node *temp = head;
+    node *prev=NULL;
+    while (temp != NULL && temp->data != val){
+        prev=temp;
+        temp = temp->next;
+}
+    if (temp!=NULL){
+        prev->next=temp->next;
+        delete temp;
+    }
+    }
+
+int main(){
+
+    node *head = NULL;
+    insert(head,67);
+    insert(head,200);
+    display(head);
+    insert_beg(head,100);
+    display(head);
+    insert(head,700);
+    insert_mid(head,550,67);
+    display(head);
+    delete_val(head,200);
+    display(head);
+return 0;
+}
