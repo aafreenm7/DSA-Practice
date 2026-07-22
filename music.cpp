@@ -142,6 +142,8 @@ int main() {
         cout << "7. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
+        cin.ignore();
+
         switch(choice) {
 
         case 1:
@@ -159,7 +161,6 @@ int main() {
 
         case 2:
             cout << "Enter Song Name: ";
-            cin.ignore();
             getline(cin, song_name);
 
             cout << "Enter Artist Name: ";
@@ -173,7 +174,6 @@ int main() {
 
         case 3:
             cout << "Enter Song Name: ";
-            cin.ignore();
             getline(cin, song_name);
 
             cout << "Enter Artist Name: ";
@@ -181,7 +181,7 @@ int main() {
 
             cout << "Enter Duration: ";
             cin >> duration;
-
+            cin.ignore();
             cout << "Insert After Which Song? ";
             getline(cin, new_song);
 
@@ -190,7 +190,6 @@ int main() {
 
         case 4:
             cout << "Enter Song Name to Delete: ";
-            cin.ignore();
             getline(cin, song_name);
 
             list.delete_val(song_name);
@@ -202,7 +201,6 @@ int main() {
 
         case 6:
             cout << "Enter Song Name to Play: ";
-            cin.ignore();
             getline(cin, song_name);
 
             list.Play_song(song_name);
