@@ -175,31 +175,29 @@ void reverse(LinkList &newList){
                newList.add_song_beg(temp->song_name,temp->artist,temp->duration);
                temp = temp->next;
    }
-  
 }
+void merge(LinkList &list,LinkList &listNew,LinkList &list3){
+    Node *temp=list.head;
+   while(temp!=NULL){
+               list3.add_song(temp->song_name,temp->artist,temp->duration);
+               temp = temp->next;
+   }
+   temp=listNew.head;
+   while(temp!=NULL){
+               list3.add_song(temp->song_name,temp->artist,temp->duration);
+               temp = temp->next;
+   }
+}
+
 };
-
-
-
-
 int main() {
-
-
-
-
    LinkList list;
+   LinkList list3;
    LinkList listNew;
-
-
-
 
    int choice;
    string song_name, artist, new_song;
    float duration;
-
-
-
-
    do {
        cout << "\n====== MUSIC PLAYLIST ======\n";
        cout << "1. Add Song\n";
@@ -209,18 +207,14 @@ int main() {
        cout << "5. Display Playlist\n";
        cout << "6. Play Song\n";
        cout << "7.Reverse\n";
-       cout << "8. Exit\n";
+       cout<<"8. Merge\n";
+       cout << "9. Exit\n";
        cout << "Enter your choice: ";
        cin >> choice;
        cin.ignore();
 
 
-
-
        switch(choice) {
-
-
-
 
        case 1:
            list.inputSong(song_name, artist, duration);
@@ -282,16 +276,21 @@ int main() {
            list.Play_song(song_name);
            break;
        case 7:
+           cout<<"------Intial list----"<<endl;
+           list.display();
            cout<<"Reverse List: \n";
            list.reverse(listNew);
            listNew.display();
            break;
-          
+        case 8:
+        cout<<"-----MERGE:------"<<endl;
+        list.merge(list,listNew,list3);
+        list3.display();
+        break;
 
-
-
-
-       case 8:
+  
+  
+       case 9:
            cout << "Thank You!\n";
            break;
 
@@ -305,15 +304,13 @@ int main() {
 
 
 
-   } while(choice != 8);
+   } while(choice != 9);
 
 
 
 
    return 0;
 }
-
-
 
 
 
