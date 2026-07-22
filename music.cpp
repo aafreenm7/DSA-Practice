@@ -20,6 +20,19 @@ class LinkList{
     LinkList(){
         head=NULL;
     }
+
+void inputSong(string &song_name, string &artist, float &duration)
+{
+    cout << "Enter Song Name: ";
+    getline(cin, song_name);
+
+    cout << "Enter Artist Name: ";
+    getline(cin, artist);
+
+    cout << "Enter Duration: ";
+    cin >> duration;
+    cin.ignore();
+}
     void add_song(string song_name,string artist,float duration){
             Node *nn=new Node(song_name,artist,duration);
             if (head == NULL) {
@@ -147,41 +160,17 @@ int main() {
         switch(choice) {
 
         case 1:
-            cout << "Enter Song Name: ";
-            getline(cin, song_name);
-
-            cout << "Enter Artist Name: ";
-            getline(cin, artist);
-
-            cout << "Enter Duration: ";
-            cin >> duration;
-
+            list.inputSong(song_name, artist, duration);
             list.add_song(song_name, artist, duration);
             break;
 
         case 2:
-            cout << "Enter Song Name: ";
-            getline(cin, song_name);
-
-            cout << "Enter Artist Name: ";
-            getline(cin, artist);
-
-            cout << "Enter Duration: ";
-            cin >> duration;
-
+            list.inputSong(song_name, artist, duration);
             list.add_song_beg(song_name, artist, duration);
             break;
 
         case 3:
-            cout << "Enter Song Name: ";
-            getline(cin, song_name);
-
-            cout << "Enter Artist Name: ";
-            getline(cin, artist);
-
-            cout << "Enter Duration: ";
-            cin >> duration;
-            cin.ignore();
+            list.inputSong(song_name, artist, duration);
             cout << "Insert After Which Song? ";
             getline(cin, new_song);
 
