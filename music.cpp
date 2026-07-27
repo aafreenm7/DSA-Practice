@@ -1,3 +1,5 @@
+
+//MERGE SORT REVERSE
 #include<iostream>
 using namespace std;
 class Node {
@@ -20,24 +22,12 @@ class LinkList{
    LinkList(){
        head=NULL;
    }
-
-
-
-
 void inputSong(string &song_name, string &artist, float &duration)
 {
    cout << "Enter Song Name: ";
    getline(cin, song_name);
-
-
-
-
    cout << "Enter Artist Name: ";
    getline(cin, artist);
-
-
-
-
    cout << "Enter Duration: ";
    cin >> duration;
    cin.ignore();
@@ -56,9 +46,6 @@ void inputSong(string &song_name, string &artist, float &duration)
    }   
 cout << song_name << " successfully added!!" << endl;
 
-
-
-
 }
 void add_song_beg(string song_name,string artist,float duration){
    Node *nn=new Node(song_name,artist,duration);
@@ -66,10 +53,6 @@ void add_song_beg(string song_name,string artist,float duration){
    nn->next=head;
    head=nn;
    cout << song_name << " successfully added at the begining!!" << endl;
-
-
-
-
 }
 void add_song_mid(string song_name,string artist,float duration,string new_song){
    Node *nn=new Node(song_name,artist,duration);
@@ -87,48 +70,24 @@ void add_song_mid(string song_name,string artist,float duration,string new_song)
    nn->next = aad;
    cout << song_name << " successfully added!!" << endl;
    }
-
-
-
-
 void delete_val(string song_name){
    Node *temp = head;
    Node *prev = NULL;
-
-
-
-
    while(temp != NULL && temp->song_name != song_name){
        prev = temp;
        temp = temp->next;
    }
-
-
-
-
    if(temp == NULL){
        cout << "Song not found!\n";
        return;
    }
-
-
-
-
    if(temp == head){
        head = head->next;
    }
    else{
        prev->next = temp->next;
    }
-
-
-
-
    delete temp;
-
-
-
-
    cout << song_name << " successfully deleted!!" << endl;
 }
 void display(){
@@ -188,7 +147,42 @@ void merge(LinkList &list,LinkList &listNew,LinkList &list3){
                temp = temp->next;
    }
 }
+void sort()
+{
+    Node *pointer = head;
+    while(pointer != NULL)
+    {
+        Node *temp = head;
+        Node *prev = NULL;
 
+        while(temp != NULL && temp->next != NULL)
+        {
+            if(temp->song_name > temp->next->song_name)
+            {
+                Node *var = temp->next;
+
+                temp->next = var->next;
+                var->next = temp;
+
+                if(prev == NULL)
+                    head = var;
+                else
+                    prev->next = var;
+
+                prev = var;
+            }
+            else
+            {
+                prev = temp;
+                temp = temp->next;
+            }
+        }
+
+        pointer = pointer->next;
+    }
+
+    cout << "Playlist Sorted Successfully!!" << endl;
+}
 };
 int main() {
    LinkList list;
@@ -208,7 +202,8 @@ int main() {
        cout << "6. Play Song\n";
        cout << "7.Reverse\n";
        cout<<"8. Merge\n";
-       cout << "9. Exit\n";
+       cout<<"9. Sort\n";
+       cout << "10. Exit\n";
        cout << "Enter your choice: ";
        cin >> choice;
        cin.ignore();
@@ -287,27 +282,19 @@ int main() {
         list.merge(list,listNew,list3);
         list3.display();
         break;
-
-  
-  
-       case 9:
+        case 9:
+        cout<<"-----SORT:------"<<endl;
+        list3.sort();
+        list3.display();
+        break;
+        case 10:
            cout << "Thank You!\n";
            break;
-
-
-
 
        default:
            cout << "Invalid Choice!\n";
        }
-
-
-
-
-   } while(choice != 9);
-
-
-
+   } while(choice != 10);
 
    return 0;
 }
