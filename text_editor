@@ -1,0 +1,347 @@
+#include<iostream>
+#include<cstdlib>
+using namespace std;
+
+class Node{
+public:
+    string data;
+    Node *next;
+    Node *prev;
+
+    Node(string value){
+        data=value;
+        next=NULL;
+        prev=NULL;
+    }
+};
+
+
+class DoubleLinkList{
+
+private:
+    Node *head;
+
+public:
+
+    DoubleLinkList(){
+        head=NULL;
+    }
+
+
+    void insert(string data){
+
+        Node *nn=new Node(data);
+
+        if(head==NULL){
+            head=nn;
+            cout<<"Successfully inserted "<<data<<" as first node"<<endl;
+        }
+
+        else{
+
+            Node *temp=head;
+
+            while(temp->next!=NULL){
+                temp=temp->next;
+            }
+
+            temp->next=nn;
+            nn->prev=temp;
+
+            cout<<"Successfully inserted "<<data<<" as last node"<<endl;
+        }
+    }
+
+
+
+    void delete_val(string value){
+
+        Node *temp=head;
+
+
+        while(temp!=NULL && temp->data!=value){
+            temp=temp->next;
+        }
+
+
+        if(temp==NULL){
+            cout<<"Value not found!"<<endl;
+            return;
+        }
+
+
+        if(temp==head){
+
+            head=head->next;
+
+            if(head!=NULL)
+                head->prev=NULL;
+
+            delete temp;
+
+            cout<<"Successfully deleted "<<value<<endl;
+        }
+
+
+        else if(temp->next==NULL){
+
+            temp->prev->next=NULL;
+
+            delete temp;
+
+            cout<<"Successfully deleted last node: "<<value<<endl;
+
+        }
+
+
+        else{
+
+            temp->next->prev=temp->prev;
+            temp->prev->next=temp->next;
+
+            delete temp;
+
+            cout<<"Successfully deleted middle node: "<<value<<endl;
+        }
+    }
+
+
+
+    void display(){
+
+        if(head==NULL){
+
+            cout<<"[ Buffer is Empty ]"<<endl;
+            return;
+        }
+
+
+        Node *temp=head;
+
+        int line=1;
+
+
+      //  cout<<"\n--- Text Editor Buffer Contents ---\n";
+
+
+        while(temp!=NULL){
+
+            cout<<" "<<temp->data<<" ";
+
+            temp=temp->next;
+        }
+
+
+    }
+
+
+
+
+    void displayReverse(){
+
+    if(head==NULL){
+
+        cout<<"List Empty"<<endl;
+        return;
+    }
+
+    Node *temp=head;
+
+    // Move to last node
+    while(temp->next!=NULL){
+        temp=temp->next;
+    }
+
+    cout<<"\nReverse Text Buffer:\n";
+
+    // Traverse backward using prev pointer
+    while(temp!=NULL){
+
+        cout<<temp->data<<" ";
+
+        temp=temp->prev;
+    }
+
+    cout<<endl;
+}
+
+
+
+
+    void search(string value){
+
+    Node *temp=head;
+    int pos=1;
+
+    while(temp!=NULL){
+
+        if(temp->data==value){
+
+            cout<<"\nText Found at Position "<<pos<<endl;
+            return;
+        }
+
+        temp=temp->next;
+        pos++;
+    }
+
+    cout<<"\nText Not Found"<<endl;
+}
+
+
+
+
+    void clearScreen(){
+
+        system("clear");
+    }
+
+
+
+
+    void showMenuTable(){
+
+    clearScreen();
+
+    cout<<"\n=================================================\n";
+    cout<<"        DOUBLY LINKED LIST TEXT EDITOR\n";
+    cout<<"=================================================\n\n";
+
+    display();
+    cout<<"\n =================================================\n\n";
+    cout<<"\n1. Insert Text\n";
+    cout<<"2. Delete Text\n";
+    cout<<"3. Display Text Buffer\n";
+    cout<<"4. Search Text\n";
+    cout<<"5. Reverse Text Editor Buffer\n";
+    cout<<"6. Exit\n";
+
+}
+
+
+
+
+    ~DoubleLinkList(){
+
+        Node *temp=head;
+
+        while(temp!=NULL){
+
+            Node *next=temp->next;
+
+            delete temp;
+
+            temp=next;
+        }
+    }
+
+};
+
+
+
+
+int main(){
+
+    int choice;
+
+    string text;
+
+
+    DoubleLinkList d;
+
+
+    while(true){
+
+
+        d.showMenuTable();
+
+
+        cout<<"\nEnter Choice : ";
+
+        cin>>choice;
+
+        cin.ignore();
+
+
+
+        switch(choice){
+
+
+        case 1:
+
+    cout<<"Enter text to insert : ";
+
+    getline(cin,text);
+
+    d.insert(text);
+
+    break;
+
+
+
+        case 2:
+
+            cout<<"Enter text to delete : ";
+
+            getline(cin,text);
+
+            d.delete_val(text);
+
+            break;
+
+
+
+        case 3:
+
+            d.display();
+
+            break;
+
+
+
+        case 4:
+
+    cout<<"Enter text to search : ";
+
+    getline(cin,text);
+
+    d.search(text);
+
+    cout<<"\nPress Enter to continue...";
+    cin.get();
+
+    break;
+
+
+
+            case 5:
+
+    d.displayReverse();
+
+    cout<<"\nPress Enter to continue...";
+    cin.get();
+
+    break;
+
+
+
+
+
+        case 6:
+
+            cout<<"Exiting Text Editor Application...\n";
+
+            return 0;
+
+
+
+        default:
+
+            cout<<"Invalid Choice!";
+
+        }
+    }
+
+
+    return 0;
+}
