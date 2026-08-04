@@ -1,0 +1,214 @@
+#include<iostream>
+using namespace std;
+
+class Node {
+public:
+    int data;
+    Node *next = NULL;
+
+    // Constructor
+    Node(int val) {
+        data = val;
+    }
+};
+
+class Circular {
+
+private:
+    Node *head;
+
+public:
+
+    // Constructor
+    Circular() {
+        head = NULL;
+    }
+
+    // Insert node at the end
+    void insert_end(int val) {
+
+        Node *nn = new Node(val);
+
+        // If list is empty
+        if (head == NULL) {
+            head = nn;
+            nn->next = head;
+            return;
+        }
+
+        // Traverse till last node
+        else {
+            Node *temp = head;
+
+            while (temp->next != head) {
+                temp = temp->next;
+            }
+
+            // Link new node
+            temp->next = nn;
+            nn->next = head;
+        }
+    }
+
+    // Insert node at a given position
+    void insert_mid(int val, int pos) {
+
+        // Empty list
+        if (head == NULL) {
+            return;
+        }
+
+        // Insert at first position
+        if (pos == 1) {
+            insert_beg(val);
+            return;
+        }
+
+        Node *nn = new Node(val);
+        Node *temp = head;
+        int count = 1;
+
+        // Traverse till previous position
+        while (temp->next != head && count < pos - 1) {
+            temp = temp->next;
+            count++;
+        }
+
+        // Insert node
+        nn->next = temp->next;
+        temp->next = nn;
+    }
+
+    // Insert node at beginning
+    void insert_beg(int val) {
+
+        Node *temp = head;
+        Node *nn = new Node(val);
+
+        // Empty list
+        if (head == NULL) {
+            head = nn;
+            nn->next = head;
+            return;
+        }
+
+        // Traverse till last node
+        while (temp->next != head) {
+            temp = temp->next;
+        }
+
+        // Update links
+        temp->next = nn;
+        nn->next = head;
+        head = nn;
+    }
+
+    // Delete node by value
+    void delete_val(int val) {
+
+        // Empty list
+        if (head == NULL) {
+            return;
+        }
+
+        // First node deletion
+        if (head->data == val) {
+
+            // Only one node present
+            if (head->next == head) {
+                delete head;
+                head = NULL;
+                return;
+            }
+
+            Node *temp = head;
+
+            // Reach last node
+            while (temp->next != head) {
+                temp = temp->next;
+            }
+
+            Node *del = head;
+            head = head->next;
+            temp->next = head;
+            delete del;
+            return;
+        }
+
+        Node *temp = head;
+
+        // Search node to delete
+        while (temp->next != head && temp->next->data != val) {
+            temp = temp->next;
+        }
+
+        // Value not found
+        if (temp->next == head && head->data != val) {
+            cout << "Value not found" << endl;
+            return;
+        }
+
+        // Last node deletion
+        if (temp->next->next == head) {
+            Node *del = temp->next;
+            temp->next = head;
+            delete del;
+        }
+
+        // Middle node deletion
+        else {
+            Node *del = temp->next;
+            temp->next = del->next;
+            delete del;
+        }
+    }
+
+    // Display circular linked list
+    void display() {
+
+        // Empty list
+        if (head == NULL) {
+            cout << "List is empty";
+            return;
+        }
+
+        Node *temp = head;
+
+        cout << "-----LINKLIST------" << endl;
+
+        // Traverse and print all nodes
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != head);
+
+        cout << endl;
+    }
+};
+
+int main() {
+
+    Circular c;
+
+    // Insert at end
+    c.insert_end(10);
+    c.display();
+
+    // Insert at beginning
+    c.insert_beg(1);
+    c.display();
+
+    // Insert at middle
+    c.insert_mid(5, 2);
+    c.display();
+
+    // Insert at beginning using position
+    c.insert_mid(0, 1);
+    c.display();
+
+    // Delete node
+    c.delete_val(10);
+    c.display();
+
+    return 0;
+}
