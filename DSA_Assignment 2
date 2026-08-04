@@ -1,0 +1,66 @@
+#include<iostream>
+#include<string>
+using namespace std;
+class Node{
+    public:
+        int postId;
+        string userName;
+        string content;
+        long timestamp;
+        Node *next=NULL;
+        Node*prev=NULL;
+        Node(string u,string c,long t){
+            userName=u;
+            content=c;
+            timestamp=t;
+        }
+};
+class Post{
+    private:
+    Node *head;
+    public:
+    Post(){
+        head=NULL;
+    }
+    void getData(string &userName,string &content,long &timestamp){
+        cout<<"Enter Username: ";
+        cin.ignore();
+        getline(cin,userName);
+        cout<<"Enter Content: ";
+        getline(cin,content);
+        cout<<"Enter timestamp: ";
+        cin>>timestamp;        
+    }
+    void insert(string userName,string content,long timestamp){
+        Node *nn=new Node(userName,content,timestamp);
+        if(head==NULL){
+            head=nn;
+        }
+        else{
+            Node *temp=head;
+            while(temp!=NULL){
+                temp=temp->next;
+            }
+            temp->next=nn;
+            nn->prev=temp;
+        }
+    }
+    void insert_position(int pos,string userName,string content,long timestamp){
+        Node *nn=new Node(userName,content,timestamp);
+        if (pos==1){
+            nn->next=head;
+            if (head!=NULL){
+            head->prev=nn;
+            }
+        head=nn;
+        return;
+        }
+        int count=1;
+        Node *temp=head;
+        while(pos!=count && temp!=NULL){
+            temp=temp->next;
+            count++;
+        }
+
+    }
+};
