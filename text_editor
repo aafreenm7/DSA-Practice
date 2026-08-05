@@ -1,74 +1,125 @@
 #include<iostream>
-#include<cstdlib>
+#include<string>
 using namespace std;
 
 class Node{
 public:
-    string data;
+    int postId;
+    string userName;
+    string content;
+    int time;
     Node *next;
     Node *prev;
 
-    Node(string value){
-        data=value;
+    Node(int id,string u,string c,int t){
+        postId=id;
+        userName=u;
+        content=c;
+        time=t;
         next=NULL;
         prev=NULL;
     }
 };
 
-
-class DoubleLinkList{
-
+class Post{
 private:
     Node *head;
+    int id;
 
 public:
-
-    DoubleLinkList(){
+    Post(){
         head=NULL;
+        id=1;
     }
 
+    void getData(string &userName,string &content,int &time){
+        cin.ignore();
 
-    void insert(string data){
+        cout<<"Enter Username: ";
+        getline(cin,userName);
 
-        Node *nn=new Node(data);
+        cout<<"Enter Content: ";
+        getline(cin,content);
+        cout<<"Enter time: ";
+        cin>>time;
+
+    }
+
+    void insert(string userName,string content,int time){
+
+        Node *nn=new Node(id++,userName,content, time);
 
         if(head==NULL){
             head=nn;
-            cout<<"Successfully inserted "<<data<<" as first node"<<endl;
-        }
-
-        else{
-
-            Node *temp=head;
-
-            while(temp->next!=NULL){
-                temp=temp->next;
-            }
-
-            temp->next=nn;
-            nn->prev=temp;
-
-            cout<<"Successfully inserted "<<data<<" as last node"<<endl;
-        }
-    }
-
-
-
-    void delete_val(string value){
-
-        Node *temp=head;
-
-
-        while(temp!=NULL && temp->data!=value){
-            temp=temp->next;
-        }
-
-
-        if(temp==NULL){
-            cout<<"Value not found!"<<endl;
             return;
         }
 
+        Node *temp=head;
+
+        while(temp->next!=NULL){
+            temp=temp->next;
+        }
+
+        temp->next=nn;
+        nn->prev=temp;
+    }
+
+    // Insert at Position
+    void insert_position(int pos,string userName,string content,int time){
+
+        Node *nn=new Node(id++,userName,content,time);
+
+        if(pos==1){
+            nn->next=head;
+
+            if(head!=NULL)
+                head->prev=nn;
+
+            head=nn;
+            return;
+        }
+
+        Node *temp=head;
+        int count=1;
+
+        while(count<pos-1 && temp!=NULL){
+            temp=temp->next;
+            count++;
+        }
+
+        if(temp==NULL){
+            cout<<"Invalid Position\n";
+            delete nn;
+            return;
+        }
+
+        nn->next=temp->next;
+        nn->prev=temp;
+
+        if(temp->next!=NULL)
+            temp->next->prev=nn;
+
+        temp->next=nn;
+    }
+
+    // Delete by Post ID
+    void delete_post(int pid){
+
+        if(head==NULL){
+            cout<<"No Posts Available\n";
+            return;
+        }
+
+        Node *temp=head;
+
+        while(temp!=NULL && temp->postId!=pid){
+            temp=temp->next;
+        }
+
+        if(temp==NULL){
+            cout<<"Post Not Found\n";
+            return;
+        }
 
         if(temp==head){
 
@@ -76,272 +127,207 @@ public:
 
             if(head!=NULL)
                 head->prev=NULL;
-
-            delete temp;
-
-            cout<<"Successfully deleted "<<value<<endl;
         }
-
 
         else if(temp->next==NULL){
 
             temp->prev->next=NULL;
-
-            delete temp;
-
-            cout<<"Successfully deleted last node: "<<value<<endl;
-
         }
-
 
         else{
 
-            temp->next->prev=temp->prev;
             temp->prev->next=temp->next;
-
-            delete temp;
-
-            cout<<"Successfully deleted middle node: "<<value<<endl;
+            temp->next->prev=temp->prev;
         }
+
+        delete temp;
+        cout<<"Post Deleted Successfully\n";
     }
 
+    // Search by Post ID
+    void search(int pid){
+
+        Node *temp=head;
+
+        while(temp!=NULL){
+
+            if(temp->postId==pid){
+
+                cout<<"\nPost Found\n";
+                cout<<"Post ID : "<<temp->postId<<endl;
+                cout<<"Username : "<<temp->userName<<endl;
+                cout<<"Content : "<<temp->content<<endl;
+                cout<<"Time : "<<temp->time<<endl;
+                return;
+            }
+
+            temp=temp->next;
+        }
+
+        cout<<"Post Not Found\n";
+    }
 
 
     void display(){
 
         if(head==NULL){
-
-            cout<<"[ Buffer is Empty ]"<<endl;
+            cout<<"No Posts Available\n";
             return;
         }
 
-
         Node *temp=head;
 
-        int line=1;
-
-
-      //  cout<<"\n--- Text Editor Buffer Contents ---\n";
-
+        cout<<"\n=========== INSTAGRAM FEED ===========\n";
 
         while(temp!=NULL){
 
-            cout<<" "<<temp->data<<" ";
+            cout<<"-----------------------------------\n";
+            cout<<"Post ID   : "<<temp->postId<<endl;
+            cout<<"Username  : "<<temp->userName<<endl;
+            cout<<"Content   : "<<temp->content<<endl;
+            cout<<"Time : "<<temp->time<<endl;
 
             temp=temp->next;
         }
-
-
     }
 
 
+    void reverse(){
 
-
-    void displayReverse(){
-
-    if(head==NULL){
-
-        cout<<"List Empty"<<endl;
-        return;
-    }
-
-    Node *temp=head;
-
-    // Move to last node
-    while(temp->next!=NULL){
-        temp=temp->next;
-    }
-
-    cout<<"\nReverse Text Buffer:\n";
-
-    // Traverse backward using prev pointer
-    while(temp!=NULL){
-
-        cout<<temp->data<<" ";
-
-        temp=temp->prev;
-    }
-
-    cout<<endl;
-}
-
-
-
-
-    void search(string value){
-
-    Node *temp=head;
-    int pos=1;
-
-    while(temp!=NULL){
-
-        if(temp->data==value){
-
-            cout<<"\nText Found at Position "<<pos<<endl;
+        if(head==NULL){
+            cout<<"No Posts Available\n";
             return;
         }
 
-        temp=temp->next;
-        pos++;
-    }
-
-    cout<<"\nText Not Found"<<endl;
-}
-
-
-
-
-    void clearScreen(){
-
-        system("clear");
-    }
-
-
-
-
-    void showMenuTable(){
-
-    clearScreen();
-
-    cout<<"\n=================================================\n";
-    cout<<"        DOUBLY LINKED LIST TEXT EDITOR\n";
-    cout<<"=================================================\n\n";
-
-    display();
-    cout<<"\n =================================================\n\n";
-    cout<<"\n1. Insert Text\n";
-    cout<<"2. Delete Text\n";
-    cout<<"3. Display Text Buffer\n";
-    cout<<"4. Search Text\n";
-    cout<<"5. Reverse Text Editor Buffer\n";
-    cout<<"6. Exit\n";
-
-}
-
-
-
-
-    ~DoubleLinkList(){
-
         Node *temp=head;
+
+        while(temp->next!=NULL){
+            temp=temp->next;
+        }
+
+        cout<<"\n======= REVERSE INSTAGRAM FEED =======\n";
 
         while(temp!=NULL){
 
-            Node *next=temp->next;
+            cout<<"-----------------------------------\n";
+            cout<<"Post ID   : "<<temp->postId<<endl;
+            cout<<"Username  : "<<temp->userName<<endl;
+            cout<<"Content   : "<<temp->content<<endl;
+            cout<<"Time      : "<<temp->time<<endl;
 
-            delete temp;
-
-            temp=next;
+            temp=temp->prev;
         }
     }
+    void sort()
+{
+    Node *pointer = head;
 
+    while(pointer != NULL)
+    {
+        Node *temp = pointer->next;
+
+        while(temp != NULL)
+        {
+            if(pointer->time > temp->time)
+            {
+                // Swap Post ID
+                int tId = pointer->postId;
+                pointer->postId = temp->postId;
+                temp->postId = tId;
+
+                // Swap Username
+                string tUser = pointer->userName;
+                pointer->userName = temp->userName;
+                temp->userName = tUser;
+
+                // Swap Content
+                string tContent = pointer->content;
+                pointer->content = temp->content;
+                temp->content = tContent;
+
+                // Swap Time
+                int tTime = pointer->time;
+                pointer->time = temp->time;
+                temp->time = tTime;
+            }
+
+            temp = temp->next;
+        }
+
+        pointer = pointer->next;
+    }
+
+    cout << "Posts Sorted Successfully by Time!!" << endl;
+}
 };
-
-
-
 
 int main(){
 
-    int choice;
+    Post p;
 
-    string text;
+    int choice,pos,id,time;
+    string user,content;
 
+    do{
 
-    DoubleLinkList d;
-
-
-    while(true){
-
-
-        d.showMenuTable();
-
+        cout<<"\n1. Add Post";
+        cout<<"\n2. Insert Post at Position";
+        cout<<"\n3. Delete Post";
+        cout<<"\n4. Search Post";
+        cout<<"\n5. Display Feed";
+        cout<<"\n6. Reverse Feed";
+        cout<<"\n7. Sort";
+        cout<<"\n8. Exit";
 
         cout<<"\nEnter Choice : ";
-
         cin>>choice;
-
-        cin.ignore();
-
-
 
         switch(choice){
 
-
         case 1:
-
-    cout<<"Enter text to insert : ";
-
-    getline(cin,text);
-
-    d.insert(text);
-
-    break;
-
-
+            p.getData(user,content,time);
+            p.insert(user,content,time);
+            break;
 
         case 2:
-
-            cout<<"Enter text to delete : ";
-
-            getline(cin,text);
-
-            d.delete_val(text);
-
+            cout<<"Enter Position : ";
+            cin>>pos;
+            p.getData(user,content,time);
+            p.insert_position(pos,user,content,time);
             break;
-
-
 
         case 3:
-
-            d.display();
-
+            cout<<"Enter Post ID : ";
+            cin>>id;
+            p.delete_post(id);
             break;
 
-
-
         case 4:
+            cout<<"Enter Post ID : ";
+            cin>>id;
+            p.search(id);
+            break;
 
-    cout<<"Enter text to search : ";
-
-    getline(cin,text);
-
-    d.search(text);
-
-    cout<<"\nPress Enter to continue...";
-    cin.get();
-
-    break;
-
-
-
-            case 5:
-
-    d.displayReverse();
-
-    cout<<"\nPress Enter to continue...";
-    cin.get();
-
-    break;
-
-
-
-
+        case 5:
+            p.display();
+            break;
 
         case 6:
+            p.reverse();
+            break;
+       case 7:
+            p.sort();
+            break;
 
-            cout<<"Exiting Text Editor Application...\n";
-
-            return 0;
-
-
+        case 8:
+            cout<<"Thank You!"<<endl;
+            break;
 
         default:
-
-            cout<<"Invalid Choice!";
-
+            cout<<"Invalid Choice";
         }
-    }
 
+    }while(choice!=8);
 
     return 0;
 }
